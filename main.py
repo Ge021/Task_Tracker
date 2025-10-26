@@ -29,6 +29,29 @@ def see_all_tasks():
 
     conn.close()
 
+def delete_task():
+    conn = sqlite3.connect('tasks.db')
+    c = conn.cursor()
+
+    task = input("Please enter the ID of the task you wish to delete? ")
+    search = c.execute('SELECT * FROM tasks WHERE taskID = ?', (task,)).fetchone()
+
+
+    if search:
+        if task == str(search[0]):
+            c.execute('DELETE FROM tasks WHERE taskID = ?', (task,))
+            print("Task deleted successfully")
+            conn.commit()
+
+        else:
+            print("Task does not exist")
+
+    conn.close()
+
+
+
+
+
 if __name__ == '__main__':
 
     while True:
@@ -38,7 +61,7 @@ if __name__ == '__main__':
             add_task()
 
         if choice.upper() == 'B':
-            pass
+            delete_task()
 
         if choice.upper() == 'C':
             see_all_tasks()
