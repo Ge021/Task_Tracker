@@ -18,7 +18,16 @@ def add_task():
 
     conn.close()
 
+def see_all_tasks():
+    conn = sqlite3.connect('tasks.db')
+    c = conn.cursor()
 
+    tasks = c.execute('SELECT * FROM tasks').fetchall()
+
+    for task in tasks:
+        print(f"ID: {task[0]}\nTask Description: {task[1]}\nTask Status: {task[2]}\n")
+
+    conn.close()
 
 if __name__ == '__main__':
 
@@ -32,7 +41,7 @@ if __name__ == '__main__':
             pass
 
         if choice.upper() == 'C':
-            pass
+            see_all_tasks()
 
         if choice.upper() == 'D':
             break
