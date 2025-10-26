@@ -48,6 +48,24 @@ def delete_task():
 
     conn.close()
 
+def mark_task_as_done():
+    conn = sqlite3.connect('tasks.db')
+    c = conn.cursor()
+
+    task = input("Please enter the ID of the task you wish to mark as done? ")
+    search = c.execute('SELECT * FROM tasks WHERE taskID = ?', (task,)).fetchone()
+
+    if search:
+        if task == str(search[0]):
+            c.execute('UPDATE tasks SET taskStatus = "Done" WHERE taskID = ?', (task,))
+            print("Task marked successfully")
+            conn.commit()
+
+        else:
+            print("Task does not exist")
+
+    conn.close()
+
 
 
 
@@ -55,7 +73,7 @@ def delete_task():
 if __name__ == '__main__':
 
     while True:
-        choice = input('''A. Add a task\nB. Delete a task\nC. See all tasks\nD. Exit\nWhat would you like to do? ''')
+        choice = input('''A. Add a task\nB. Delete a task\nC. See all tasks\nD. Mark task as Done\nE. Exit\nWhat would you like to do? ''')
 
         if choice.upper() == 'A':
             add_task()
@@ -67,6 +85,9 @@ if __name__ == '__main__':
             see_all_tasks()
 
         if choice.upper() == 'D':
+            mark_task_as_done()
+
+        if choice.upper() == 'E':
             break
 
 
